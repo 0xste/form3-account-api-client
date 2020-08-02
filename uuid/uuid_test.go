@@ -123,17 +123,17 @@ func TestUUID_String(t *testing.T) {
 	}{
 		{
 			name: "ok",
-			u:    mustUUID(FromStringV4("811bd024-c18c-4b8f-9602-07e7cb60ac25")),
+			u:    UUID("811bd024-c18c-4b8f-9602-07e7cb60ac25"),
 			want: "811bd024-c18c-4b8f-9602-07e7cb60ac25",
 		},
 		{
 			name: "ok nil",
-			u:    mustUUID(FromStringV4("00000000-0000-0000-0000-000000000000")),
+			u:    UUID("00000000-0000-0000-0000-000000000000"),
 			want: "00000000-0000-0000-0000-000000000000",
 		},
 		{
 			name: "nil",
-			u:    mustUUID(FromStringV4("")),
+			u:    UUID(""),
 			want: "",
 		},
 	}
@@ -144,12 +144,4 @@ func TestUUID_String(t *testing.T) {
 			}
 		})
 	}
-}
-
-func mustUUID(s UUID, e error) UUID{
-	v4, err := FromStringV4("811bd024-c18c-4b8f-9602-07e7cb60ac25")
-	if err != nil{
-		panic(err)
-	}
-	return v4
 }

@@ -8,20 +8,25 @@ const (
 	PoundSterling Currency = "GBP"
 )
 
+func (c *Currency) String() string {
+	return string(*c)
+}
+
 // validates a single country
 func (c *Currency) Validate() error {
-	for _, country := range *c.getAllCurrencies() {
-		if country == *c {
+	allCurrencies := getAllCurrencies()
+	for _, currency := range allCurrencies{
+		if currency.String() == c.String() {
 			return nil
 		}
 	}
 	return &ErrInvalidCurrency{
-		ValidCurrencies: c.getAllCurrencies(),
-		Currency:        c,
+		ValidCurrencies: allCurrencies,
+		Currency:        *c,
 	}
 }
 
 // getAllCurrencies is a helper for returning all valid currencies
-func (c *Currency) getAllCurrencies() *Currencies {
-	return &Currencies{PoundSterling}
+func getAllCurrencies() Currencies {
+	return Currencies{PoundSterling}
 }
