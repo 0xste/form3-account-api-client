@@ -60,7 +60,7 @@ func TestFromStringV4(t *testing.T) {
 
 func TestIsUUIDv4(t *testing.T) {
 	tests := []struct {
-		uid string
+		uid  string
 		want bool
 	}{
 		{uid: "0d3ccd19-f704-4803-9a73-a92225a76ce2", want: true},
@@ -92,22 +92,22 @@ func TestIsUUIDv4(t *testing.T) {
 
 func TestNewV4(t *testing.T) {
 	tests := []struct {
-		name    string
-		nToGen    int
+		name   string
+		nToGen int
 	}{
 		{
-			name:    "generates a valid UUIDv4",
-			nToGen:    10000,
+			name:   "generates a valid UUIDv4",
+			nToGen: 10000,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			for i := 0 ; i < tt.nToGen ; i++ {
+			for i := 0; i < tt.nToGen; i++ {
 				got, err := NewV4()
-				if ! IsUUIDv4(got.String()){
+				if !IsUUIDv4(got.String()) {
 					t.Errorf("invalid uuid generated %s", got.String())
 				}
-				if err != nil{
+				if err != nil {
 					t.Errorf("err should be nil but got %v", err)
 				}
 			}

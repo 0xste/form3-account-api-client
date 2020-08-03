@@ -15,7 +15,7 @@ func (c *Currency) String() string {
 // validates a single country
 func (c *Currency) Validate() error {
 	allCurrencies := getAllCurrencies()
-	for _, currency := range allCurrencies{
+	for _, currency := range allCurrencies {
 		if currency.String() == c.String() {
 			return nil
 		}

@@ -2,7 +2,7 @@ package uuid
 
 const (
 	errMsgFailureToGenerateUUID string = "failed to generate uuid"
-	errMsgFailureToCompileRegex string = "failued to compile regex"
+	errMsgFailureToCompileRegex string = "failed to compile regex"
 )
 
 // ErrFailureToGenerateUUID is returned if a UUID is not able to be generated.
