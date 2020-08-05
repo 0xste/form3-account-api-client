@@ -1,4 +1,4 @@
-package accountapi_client
+package client
 
 import (
 	"reflect"
@@ -10,7 +10,7 @@ func TestNewAccountClient_ok(t *testing.T) {
 	if err != nil {
 		t.Errorf("got %s want nil", err.Error())
 	}
-	expected := "http://localhost:9000/1"
+	expected := "http://localhost:9000/v1"
 	if client.baseUrl.String() != expected {
 		t.Errorf("String() = %v, want %v", client.baseUrl.String(), expected)
 	}
@@ -21,7 +21,7 @@ func TestNewAccountClient(t *testing.T) {
 		protocol string
 		host     string
 		port     int
-		version  int
+		version     int
 	}
 	tests := []struct {
 		name    string
@@ -35,9 +35,9 @@ func TestNewAccountClient(t *testing.T) {
 				protocol: "https",
 				host:     "localhost",
 				port:     9000,
-				version:  1,
+				version: 1,
 			},
-			want:    "https://localhost:9000/1",
+			want:    "https://localhost:9000/v1",
 			wantErr: false,
 		},
 		{
@@ -46,7 +46,6 @@ func TestNewAccountClient(t *testing.T) {
 				protocol: "aaaa",
 				host:     "localhost",
 				port:     9000,
-				version:  1,
 			},
 			want:    "",
 			wantErr: true,
@@ -57,7 +56,6 @@ func TestNewAccountClient(t *testing.T) {
 				protocol: "http",
 				host:     "localhost",
 				port:     0,
-				version:  1,
 			},
 			want:    "",
 			wantErr: true,

@@ -1,6 +1,8 @@
 package bic
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestBusinessIdentifierCode_String(t *testing.T) {
 	tests := []struct {

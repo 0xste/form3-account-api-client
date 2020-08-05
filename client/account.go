@@ -1,7 +1,9 @@
-package accountapi_client
+package client
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
@@ -14,6 +16,7 @@ const (
 	protocolHttp                     = "http"
 	protocolHttps                    = "https"
 	endpointHealth                   = "/health"
+	endpointAccounts                 = "/organisation/accounts"
 )
 
 type accountClient struct {
@@ -21,6 +24,7 @@ type accountClient struct {
 	baseUrl    *url.URL
 	httpClient http.Client
 }
+
 
 // Creates a new instance of an account client
 func NewAccountClient(protocol, host string, port, version int) (accountClient, error) {
@@ -31,7 +35,7 @@ func NewAccountClient(protocol, host string, port, version int) (accountClient, 
 		return accountClient{}, err
 	}
 
-	uri := fmt.Sprintf("%s://%s:%d/%d", protocol, host, port, version)
+	uri := fmt.Sprintf("%s://%s:%d/v%d", protocol, host, port, version)
 	baseUrl, err := url.ParseRequestURI(uri)
 	if err != nil {
 		return accountClient{}, &ErrInvalidClientBaseUri{uri}
@@ -59,4 +63,30 @@ func isValidProtocol(protocol string) error {
 		}
 	}
 	return ErrInvalidClientBaseUri{protocol}
+}
+
+func parseAccountResponse(requestMethod, accountPath string, resp *http.Response) (Account, error) {
+	var accountResponse AccountWrapper
+	body, err := ioutil.ReadAll(resp.Body)
+	defer resp.Body.Close()
+	if err != nil {
+		return Account{}, newGenericAccountError(requestMethod, accountPath, err.Error(), resp.StatusCode)
+	}
+	err = json.Unmarshal(body, &accountResponse)
+	if err != nil {
+		return Account{}, newGenericAccountError(requestMethod, accountPath, err.Error(), resp.StatusCode)
+	}
+	if err := accountResponse.Data.Validate(); err != nil {
+		return Account{}, newGenericAccountError(requestMethod, accountPath, err.Error(), resp.StatusCode)
+	}
+	return accountResponse.Data, nil
+}
+
+func newGenericAccountError(method, baseUri, message string, statusCode int) *ErrRemoteGatewayFailure {
+	return &ErrRemoteGatewayFailure{
+		Method:     method,
+		BaseUri:    baseUri,
+		StatusCode: statusCode,
+		Message:    message,
+	}
 }

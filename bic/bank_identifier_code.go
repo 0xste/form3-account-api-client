@@ -2,6 +2,7 @@ package bic
 
 import (
 	"regexp"
+	"strings"
 )
 
 const patternBic string = "([a-zA-Z]{2,5})"
@@ -14,6 +15,9 @@ func (b *BankIdentifierCode) String() string {
 }
 
 func (b *BankIdentifierCode) Validate() error {
+	if strings.TrimSpace(b.String()) == "" {
+		return &ErrInvalidBankIdentifierCode{*b}
+	}
 	bic := b.String()
 	bicRegex, err := regexp.Compile(patternBic)
 	if err != nil {

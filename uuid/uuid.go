@@ -40,3 +40,11 @@ func NewV4() (UUID, error) {
 	return FromStringV4(fmt.Sprintf("%x-%x-%x-%x-%x",
 		b[0:4], b[4:6], b[6:8], b[8:10], b[10:]))
 }
+
+//  MustUUID wraps and swallows the error with a panic
+func MustUUID(v4 UUID, err error) UUID {
+	if err != nil {
+		panic(err)
+	}
+	return v4
+}
