@@ -1,6 +1,11 @@
 version: '3'
 
 services:
+#  f3-validation:
+#    image: f3-client-validation
+#    depends_on:
+#      - accountapi
+
   accountapi:
     image: form3tech/interview-accountapi:v1.0.0-4-g63cf8434
     restart: on-failure
