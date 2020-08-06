@@ -6,3 +6,7 @@ TODO:
 - GOCK tests for api tier
 - Refactoring of client tier to tidy up
 - Dockerfile fix
+
+
+getting started
+

@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"form3-accountapi-client/uuid"
 	"io/ioutil"
-	"log"
 	"net/http"
 )
 
@@ -42,7 +41,6 @@ func (a *accountClient) Fetch(ctx context.Context, accountId uuid.UUID) (Account
 		return Account{}, newGenericAccountError(requestMethod, accountPath, err.Error(), resp.StatusCode)
 	}
 
-	log.Printf("successfully retrieved account %s", accountId)
 	return accountResponse.Data, nil
 }
 

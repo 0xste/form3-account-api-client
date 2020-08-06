@@ -1,10 +1,19 @@
 version: '3'
 
 services:
-#  f3-validation:
-#    image: stefanomantini/f3-client-validation
-#    depends_on:
-#      - accountapi
+  f3-validation:
+    image: stefanomantini/form3-account-client-test
+    restart: on-failure
+    environment:
+      - SERVER_PORT=9000
+      - API_PROTOCOL=http
+      - API_HOST=accountapi
+      - API_PORT=8080
+      - API_VERSION=1
+    depends_on:
+      - accountapi
+    ports:
+      - 9000:9000
 
   accountapi:
     image: form3tech/interview-accountapi:v1.0.0-4-g63cf8434
@@ -26,6 +35,7 @@ services:
       - DATABASE-PASSWORD=123
     ports:
       - 8080:8080
+
   postgresql:
     image: postgres:9.5-alpine
     healthcheck:

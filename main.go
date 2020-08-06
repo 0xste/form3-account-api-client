@@ -7,17 +7,63 @@ import (
 	"form3-accountapi-client/currency"
 	"form3-accountapi-client/uuid"
 	"log"
+	"net/http"
+	"os"
+	"strconv"
+	"strings"
 	"time"
 )
 
-// Exemplary code demonstrating the client library for the AccountClient
+const (
+	envProtcol    string = "API_PROTOCOL"
+	envHost       string = "API_HOST"
+	envPort       string = "API_PORT"
+	envVersion    string = "API_VERSION"
+	fmtLineBreak     string = "-------------------------------------------------------------"
+)
+
 func main() {
-	log.Println("-------------------------------------------------------------")
+
 	log.Println("Stefano Mantini 06/08/2020 Form3tech-oss/interview-accountapi")
-	log.Println("-------------------------------------------------------------")
+	log.Println(fmtLineBreak)
+	for {
+		runTest()
+		log.Print("\n\n\n")
+		time.Sleep(10*time.Second)
+	}
+}
+
+func getEnv(key string) string {
+	value := strings.TrimSpace(os.Getenv(key))
+	if value == "" {
+		log.Fatalf("key %s not found", key)
+	}
+	return value
+}
+func getEnvInt(key string) int {
+	value := strings.TrimSpace(os.Getenv(key))
+	if value == "" {
+		log.Fatalf("key %s not found", key)
+	}
+	i, err := strconv.Atoi(value)
+	if err != nil{
+		log.Fatalf("key %s not integer", key)
+	}
+	return i
+}
+
+func ping(path string) {
+	_, err := http.Get(path)
+	if err != nil {
+		log.Fatalf(err.Error())
+	}
+}
+
+// Exemplary code demonstrating the client library for the AccountClient
+func runTest() {
 
 	// Initialise an instance of the account account_client
-	accountClient, err := NewAccountClient("http", "127.0.0.1", 8080, 1)
+	accountClient, err := NewAccountClient(getEnv(envProtcol), getEnv(envHost), getEnvInt(envPort), getEnvInt(envVersion))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -32,7 +78,7 @@ func main() {
 		log.Fatalf("have you started the backing services? %v", err)
 	}
 	log.Println("Healthcheck completed successfully")
-	log.Println("-------------------------------------------------------------")
+	log.Println(fmtLineBreak)
 
 	// create account setup data
 	attr := AccountAttributes{}
@@ -62,7 +108,7 @@ func main() {
 		log.Fatal(err)
 	}
 	log.Printf("account created with id %s as expected \n", accountCreated.Id)
-	log.Println("-------------------------------------------------------------")
+	log.Println(fmtLineBreak)
 	account.Id = uuid.MustUUID(uuid.NewV4())
 	log.Printf("attempting to create account 2 %s", account.Id)
 	acct2, err := accountClient.Create(ctx, account)
@@ -70,17 +116,15 @@ func main() {
 		log.Fatal(err)
 	}
 	log.Printf("account created with id %s as expected \n", acct2.Id)
-	log.Println("-------------------------------------------------------------")
-
+	log.Println(fmtLineBreak)
 
 	// duplicate account created
 	log.Printf("attempting to create duplicate account")
 	_, err = accountClient.Create(ctx, account)
 	if _, ok := err.(*ErrDuplicateAccount); ok {
 		log.Printf("duplicate account not created with id %s as expected\n", account.Id)
-		log.Println("-------------------------------------------------------------")
+		log.Println(fmtLineBreak)
 	}
-
 
 	// invalid/nil account passed
 	invalidAcct := Account{}
@@ -90,9 +134,8 @@ func main() {
 	_, err = accountClient.Create(ctx, &invalidAcct)
 	if _, ok := err.(*ErrInvalidRequest); ok {
 		log.Printf("invalid account not created with id %s as expected\n", invalidAcct.Id)
-		log.Println("-------------------------------------------------------------")
+		log.Println(fmtLineBreak)
 	}
-
 
 	// fetch Account for non-existent
 	nonExistentAccount, err := uuid.FromStringV4("ad27e265-9605-4b4b-a0e5-3003ea9cc4de")
@@ -103,9 +146,8 @@ func main() {
 	_, err = accountClient.Fetch(ctx, nonExistentAccount)
 	if notFoundErr, ok := err.(*ErrAccountNotFound); ok {
 		log.Println(notFoundErr, "as expected")
-		log.Println("-------------------------------------------------------------")
+		log.Println(fmtLineBreak)
 	}
-
 
 	// Get Account for existent
 	log.Printf("attempting to fetch with an existing account %s", accountCreated.Id)
@@ -114,8 +156,7 @@ func main() {
 		log.Fatal(err)
 	}
 	log.Printf("account retrieved with id %s as expected \n", accountRetrieved.Id)
-	log.Println("-------------------------------------------------------------")
-
+	log.Println(fmtLineBreak)
 
 	// List all Accounts
 	log.Printf("attempting to list all accounts")
@@ -124,8 +165,7 @@ func main() {
 		log.Fatal(err)
 	}
 	log.Printf("list retrieved %d accounts \n", len(accountsRetrieved))
-	log.Println("-------------------------------------------------------------")
-
+	log.Println(fmtLineBreak)
 
 	// simple limit/offset for paginated accounts
 	log.Printf("attempting to list account subset of all %d accounts, with limit %d and offset %d", len(accountsRetrieved), 1, 1)
@@ -135,15 +175,14 @@ func main() {
 	}
 	if len(paginated) == 1 {
 		log.Printf("paginated %d accounts to single record successfully", len(accountsRetrieved))
-		log.Println("-------------------------------------------------------------")
+		log.Println(fmtLineBreak)
 	}
-
 
 	// delete account that doesn't exist
 	err = accountClient.Delete(ctx, uuid.MustUUID(uuid.NewV4()), 1)
 	if _, ok := err.(*ErrAccountNotFound); ok {
 		log.Printf("account not deleted successfully %s", err)
-		log.Println("-------------------------------------------------------------")
+		log.Println(fmtLineBreak)
 	}
 
 	// delete found accounts
@@ -155,7 +194,6 @@ func main() {
 			log.Fatal(err)
 		}
 		log.Printf("account deleted successfully %s", acct.Id)
-		log.Println("-------------------------------------------------------------")
-
+		log.Println(fmtLineBreak)
 	}
 }
