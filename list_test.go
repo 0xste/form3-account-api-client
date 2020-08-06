@@ -36,8 +36,8 @@ func Test_limitAndOffset(t *testing.T) {
 		{
 			name: "simple size",
 			args: args{
-				data:   testAccounts[0:9],
-				skip:  0,
+				data: testAccounts[0:9],
+				skip: 0,
 				size: 1,
 			},
 			want: getIdsForRange(testAccounts[0:9], 0, 1),
@@ -45,8 +45,8 @@ func Test_limitAndOffset(t *testing.T) {
 		{
 			name: "breach upper bounds entirely",
 			args: args{
-				data:   testAccounts[0:1],
-				skip:  10,
+				data: testAccounts[0:1],
+				skip: 10,
 				size: 1,
 			},
 			want: getIdsForRange(testAccounts[0:0], 0, 0),
@@ -54,8 +54,8 @@ func Test_limitAndOffset(t *testing.T) {
 		{
 			name: "breach upper bounds partially",
 			args: args{
-				data:   testAccounts[0:10],
-				skip:  5,
+				data: testAccounts[0:10],
+				skip: 5,
 				size: 10,
 			},
 			want: getIdsForRange(testAccounts[0:10], 5, 10),
@@ -64,17 +64,15 @@ func Test_limitAndOffset(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			accounts := paginate(tt.args.data, tt.args.size, tt.args.skip)
-			if len(accounts) != len(tt.want){
+			if len(accounts) != len(tt.want) {
 				t.Errorf("\ngotLen  :%d\nwantLen :%d", len(accounts), len(tt.want))
 			}
-			if ! reflect.DeepEqual(getIds(accounts), tt.want){
+			if !reflect.DeepEqual(getIds(accounts), tt.want) {
 				t.Errorf("\ngot  :%v\nwant :%v", getIds(accounts), tt.want)
 			}
 		})
 	}
 }
-
-
 
 func getIdsForRange(accounts []Account, from, to int) []uuid.UUID {
 	return getIds(accounts[from:to])
@@ -90,7 +88,7 @@ func getIds(r []Account) []uuid.UUID {
 
 func generateTestAccounts(nAccounts int) []Account {
 	var accounts []Account
-	for i := 0 ; i < nAccounts ; i ++ {
+	for i := 0; i < nAccounts; i++ {
 		attr := AccountAttributes{}
 		attr.
 			WithAlternativeBankAccountNames([]string{"some bank"}).
@@ -104,7 +102,7 @@ func generateTestAccounts(nAccounts int) []Account {
 		account := a.
 			WithAccountType(account_type.TypeAccount).
 			WithId(uuid.MustUUID(uuid.NewV4())).
-			WithCreatedOn(time.Now().AddDate(0,0,-10)).
+			WithCreatedOn(time.Now().AddDate(0, 0, -10)).
 			WithModifiedOn(time.Now()).
 			WithOrganisationId(uuid.MustUUID(uuid.NewV4())).
 			WithVersion(1).

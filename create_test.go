@@ -18,7 +18,7 @@ import (
 func createAccount(t time.Time, accountId, orgId uuid.UUID, bankId, bankIdCode string, bic bic2.BankIdentifierCode) AccountWrapper {
 	return AccountWrapper{
 		Data: Account{
-			Attributes:     AccountAttributes{
+			Attributes: AccountAttributes{
 				AlternativeBankAccountNames: nil,
 				BankId:                      bankId,
 				BankIdCode:                  bankIdCode,
@@ -82,7 +82,6 @@ func Test_accountClient_Create_ok(t *testing.T) {
 			"self": "/v1/organisation/accounts/ad27e265-9605-4b4b-a0e5-3003ea9cc4dd"
 		}
 	}`, now.Format(time.RFC3339), now.Format(time.RFC3339))
-
 
 	defer gock.Off()
 	gock.New("http://server.com").
@@ -162,7 +161,6 @@ func Test_accountClient_Create_duplicate(t *testing.T) {
     "error_message": "Account cannot be created as it violates a duplicate constraint"
 	}`
 
-
 	defer gock.Off()
 	gock.New("http://server.com").
 		Post("/v1/organisation/accounts").
@@ -185,4 +183,3 @@ func Test_accountClient_Create_duplicate(t *testing.T) {
 	}
 
 }
-

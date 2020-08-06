@@ -46,7 +46,7 @@ func (a *accountClient) Health(ctx context.Context) error {
 		}
 	}
 
-	if strings.ToUpper(healthResponse.Status) != "UP"{
+	if strings.ToUpper(healthResponse.Status) != "UP" {
 		return &ErrRemoteGatewayFailure{
 			Method:     requestMethod,
 			BaseUri:    healthPath,

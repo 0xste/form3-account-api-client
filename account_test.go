@@ -21,7 +21,7 @@ func TestNewAccountClient(t *testing.T) {
 		protocol string
 		host     string
 		port     int
-		version     int
+		version  int
 	}
 	tests := []struct {
 		name    string
@@ -35,7 +35,7 @@ func TestNewAccountClient(t *testing.T) {
 				protocol: "https",
 				host:     "localhost",
 				port:     9000,
-				version: 1,
+				version:  1,
 			},
 			want:    "https://localhost:9000/v1",
 			wantErr: false,

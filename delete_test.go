@@ -15,7 +15,7 @@ func Test_accountClient_Delete_ok_or_non_existent(t *testing.T) {
 
 	defer gock.Off()
 	gock.New("http://server.com").
-		Delete("/v1/organisation/accounts/"+accountId.String()).
+		Delete("/v1/organisation/accounts/" + accountId.String()).
 		Reply(http.StatusNoContent).
 		BodyString("")
 
@@ -44,7 +44,7 @@ func Test_accountClient_Delete_existing_non_existent_version(t *testing.T) {
 
 	defer gock.Off()
 	gock.New("http://server.com").
-		Delete("/v1/organisation/accounts/"+accountId.String()).
+		Delete("/v1/organisation/accounts/" + accountId.String()).
 		Reply(http.StatusNotFound).
 		BodyString(response)
 

@@ -43,4 +43,3 @@ func (a *accountClient) Fetch(ctx context.Context, accountId uuid.UUID) (Account
 
 	return accountResponse.Data, nil
 }
-

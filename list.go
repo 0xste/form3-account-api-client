@@ -46,7 +46,7 @@ func paginate(data []Account, limit, offset int) []Account {
 	return data[offset:end]
 }
 
-type AccountsWrapper struct{
-	Data []Account
+type AccountsWrapper struct {
+	Data  []Account
 	Links map[string]string
 }

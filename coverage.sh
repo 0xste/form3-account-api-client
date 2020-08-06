@@ -1,0 +1,3 @@
+go test -race -tags musl -coverprofile cover.out.tmp ./...
+cat cover.out.tmp | grep -v "main.go" > cover.out
+go tool cover -func cover.out | grep total | awk '{print "Coverage: "$3}'

@@ -15,11 +15,11 @@ import (
 )
 
 const (
-	envProtcol    string = "API_PROTOCOL"
-	envHost       string = "API_HOST"
-	envPort       string = "API_PORT"
-	envVersion    string = "API_VERSION"
-	fmtLineBreak     string = "-------------------------------------------------------------"
+	envProtcol   string = "API_PROTOCOL"
+	envHost      string = "API_HOST"
+	envPort      string = "API_PORT"
+	envVersion   string = "API_VERSION"
+	fmtLineBreak string = "-------------------------------------------------------------"
 )
 
 func main() {
@@ -29,7 +29,7 @@ func main() {
 	for {
 		runTest()
 		log.Print("\n\n\n")
-		time.Sleep(10*time.Second)
+		time.Sleep(10 * time.Second)
 	}
 }
 
@@ -46,7 +46,7 @@ func getEnvInt(key string) int {
 		log.Fatalf("key %s not found", key)
 	}
 	i, err := strconv.Atoi(value)
-	if err != nil{
+	if err != nil {
 		log.Fatalf("key %s not integer", key)
 	}
 	return i

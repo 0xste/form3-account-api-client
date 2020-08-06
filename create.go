@@ -27,18 +27,18 @@ func (a *accountClient) Create(ctx context.Context, account *Account) (Account, 
 	if resp.StatusCode == http.StatusConflict {
 		return Account{}, &ErrDuplicateAccount{account}
 	}
-	if resp.StatusCode == http.StatusBadRequest{
+	if resp.StatusCode == http.StatusBadRequest {
 		all, err := ioutil.ReadAll(resp.Body)
-		if err != nil{
+		if err != nil {
 			return Account{}, newGenericAccountError(requestMethod, accountPath, err.Error(), resp.StatusCode)
 		}
 		var respErr map[string]string
 		err = json.Unmarshal(all, &respErr)
-		if err != nil{
+		if err != nil {
 			return Account{}, newGenericAccountError(requestMethod, accountPath, err.Error(), resp.StatusCode)
 		}
 		errStr, ok := respErr["error_message"]
-		if !ok{
+		if !ok {
 			return Account{}, newGenericAccountError(requestMethod, accountPath, err.Error(), resp.StatusCode)
 		}
 
@@ -59,4 +59,3 @@ func (a *accountClient) Create(ctx context.Context, account *Account) (Account, 
 	}
 	return accountResponse, nil
 }
-
