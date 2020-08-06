@@ -1,2 +1,2 @@
-go build -o f3-client-validation
-docker build -t stefanomantini/f3-client-validation .
+go build -o form3-account-client-test
+docker build -t stefanomantini/form3-account-client-test .
