@@ -1,10 +1,11 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
+	"form3-accountapi-client/uuid"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -13,24 +14,23 @@ import (
 
 const (
 	httpDefaultTimeout time.Duration = 5
-	protocolHttp                     = "http"
-	protocolHttps                    = "https"
-	endpointHealth                   = "/health"
-	endpointAccounts                 = "/organisation/accounts"
+	protocolHttp       string        = "http"
+	protocolHttps      string        = "https"
+	endpointHealth     string        = "/health"
+	endpointAccounts   string        = "/organisation/accounts"
 )
 
 type accountClient struct {
-	log        log.Logger
 	baseUrl    *url.URL
 	httpClient http.Client
 }
 
-//type AccountClient interface {
-//	Fetch(ctx context.Context, accountId uuid.UUID) (Account, error)
-//	List(ctx context.Context, limit int, offset int) ([]Account, error)
-//	Create(ctx context.Context, account *Account) (Account, error)
-//	Delete(ctx context.Context, accountId uuid.UUID, version int64) error
-//}
+type AccountClient interface {
+	Fetch(ctx context.Context, accountId uuid.UUID) (Account, error)
+	List(ctx context.Context, limit int, offset int) ([]Account, error)
+	Create(ctx context.Context, account *Account) (Account, error)
+	Delete(ctx context.Context, accountId uuid.UUID, version int64) error
+}
 
 // Creates a new instance of an account client
 func NewAccountClient(protocol, host string, port, version int) (accountClient, error) {

@@ -115,4 +115,4 @@ modules.xml
 # End of https://www.toptal.com/developers/gitignore/api/go,intellij+all
 
 form3-account-client-test
-.tmp
+*.tmp

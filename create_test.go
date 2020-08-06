@@ -98,6 +98,9 @@ func Test_accountClient_Create_ok(t *testing.T) {
 
 	// act
 	account, err := accountClient.Create(context.TODO(), &accountToCreate.Data)
+	if err != nil {
+		t.Errorf("expected no error but got %v", err)
+	}
 
 	//assert
 

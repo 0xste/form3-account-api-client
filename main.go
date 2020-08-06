@@ -7,7 +7,6 @@ import (
 	"form3-accountapi-client/currency"
 	"form3-accountapi-client/uuid"
 	"log"
-	"net/http"
 	"os"
 	"strconv"
 	"strings"
@@ -50,13 +49,6 @@ func getEnvInt(key string) int {
 		log.Fatalf("key %s not integer", key)
 	}
 	return i
-}
-
-func ping(path string) {
-	_, err := http.Get(path)
-	if err != nil {
-		log.Fatalf(err.Error())
-	}
 }
 
 // Exemplary code demonstrating the client library for the AccountClient
