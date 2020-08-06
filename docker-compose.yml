@@ -2,7 +2,7 @@ version: '3'
 
 services:
   f3-validation:
-    image: f3-client-validation
+    image: stefanomantini/f3-client-validation
     depends_on:
       - accountapi
 

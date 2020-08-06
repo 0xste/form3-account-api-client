@@ -38,7 +38,8 @@ func TestAccount_Validate(t *testing.T) {
 				Attributes: AccountAttributes{
 					AlternativeBankAccountNames: []string{"one", "two"},
 					BankId:                      "123455",
-					BankIdCode:                  bic.BankIdentifierCode("BARC"),
+					Bic:                         bic.BankIdentifierCode("GEBABEBB"),
+					BankIdCode:                  "BankId",
 					BaseCurrency:                currency.PoundSterling,
 					Country:                     country.UnitedKingdomofGreatBritainandNorthernIrelandthe,
 				},
@@ -57,7 +58,8 @@ func TestAccount_Validate(t *testing.T) {
 				Attributes: AccountAttributes{
 					AlternativeBankAccountNames: []string{"one", "two"},
 					BankId:                      "123455",
-					BankIdCode:                  bic.BankIdentifierCode("BARC"),
+					Bic:                         bic.BankIdentifierCode("BARC"),
+					BankIdCode:                  "BARC",
 					BaseCurrency:                currency.PoundSterling,
 					Country:                     country.UnitedKingdomofGreatBritainandNorthernIrelandthe,
 				},
@@ -76,7 +78,8 @@ func TestAccount_Validate(t *testing.T) {
 				Attributes: AccountAttributes{
 					AlternativeBankAccountNames: []string{"one", "two"},
 					BankId:                      "123455",
-					BankIdCode:                  bic.BankIdentifierCode("BARC"),
+					Bic:                         bic.BankIdentifierCode("GEBABEBB"),
+					BankIdCode:                  "BankId",
 					BaseCurrency:                currency.PoundSterling,
 					Country:                     country.UnitedKingdomofGreatBritainandNorthernIrelandthe,
 				},
@@ -95,7 +98,8 @@ func TestAccount_Validate(t *testing.T) {
 				Attributes: AccountAttributes{
 					AlternativeBankAccountNames: []string{"some account name"},
 					BankId:                      "0",
-					BankIdCode:                  bic.BankIdentifierCode("BARC"),
+					Bic:                         bic.BankIdentifierCode("GEBABEBB"),
+					BankIdCode:                  "BankId",
 					BaseCurrency:                currency.PoundSterling,
 					Country:                     country.UnitedKingdomofGreatBritainandNorthernIrelandthe,
 				},
@@ -114,7 +118,8 @@ func TestAccount_Validate(t *testing.T) {
 				Attributes: AccountAttributes{
 					AlternativeBankAccountNames: []string{"some account name"},
 					BankId:                      "12345",
-					BankIdCode:                  bic.BankIdentifierCode("BARC"),
+					Bic:                         bic.BankIdentifierCode("GEBABEBB"),
+					BankIdCode:                  "BankId",
 					BaseCurrency:                currency.Currency("NOTENROLLED"),
 					Country:                     country.UnitedKingdomofGreatBritainandNorthernIrelandthe,
 				},
@@ -133,7 +138,8 @@ func TestAccount_Validate(t *testing.T) {
 				Attributes: AccountAttributes{
 					AlternativeBankAccountNames: []string{"some account name"},
 					BankId:                      "12345",
-					BankIdCode:                  bic.BankIdentifierCode("BARC"),
+					Bic:                         bic.BankIdentifierCode("GEBABEBB"),
+					BankIdCode:                  "BankId",
 					BaseCurrency:                currency.Currency(""),
 					Country:                     country.UnitedKingdomofGreatBritainandNorthernIrelandthe,
 				},
@@ -152,7 +158,8 @@ func TestAccount_Validate(t *testing.T) {
 				Attributes: AccountAttributes{
 					AlternativeBankAccountNames: []string{"some account name"},
 					BankId:                      "12345",
-					BankIdCode:                  bic.BankIdentifierCode("BARC"),
+					Bic:                         bic.BankIdentifierCode("GEBABEBB"),
+					BankIdCode:                  "BankId",
 					BaseCurrency:                currency.Currency("GBP"),
 					Country:                     country.Country("SOMECOUNTRY"),
 				},
@@ -171,14 +178,14 @@ func TestAccount_Validate(t *testing.T) {
 				Attributes: AccountAttributes{
 					AlternativeBankAccountNames: []string{"some account name"},
 					BankId:                      "12345",
-					BankIdCode:                  bic.BankIdentifierCode("BARC"),
+					Bic:                         bic.BankIdentifierCode("GEBABEBB"),
+					BankIdCode:                  "BankId",
 					BaseCurrency:                currency.Currency("GBP"),
 					Country:                     country.Country("nil"),
 				},
 			},
 			wantErr: true,
 		},
-
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -207,7 +214,8 @@ func TestAccount_Builder(t *testing.T) {
 		WithAlternativeBankAccountNames([]string{"some bank"}).
 		WithCountry(country.UnitedKingdomofGreatBritainandNorthernIrelandthe).
 		WithBankId("1234").
-		WithBic("BARC").
+		WithBankIdCode("BARC").
+		WithBic(bic.BankIdentifierCode("UCJAES2MXXX")).
 		WithBaseCurrency(currency.PoundSterling).
 		WithCountry(country.UnitedKingdomofGreatBritainandNorthernIrelandthe)
 
@@ -228,15 +236,16 @@ func TestAccount_Builder(t *testing.T) {
 		ModifiedOn:     now,
 		OrganisationId: someUuid,
 		Version:        1,
-		Attributes:       AccountAttributes{
+		Attributes: AccountAttributes{
 			AlternativeBankAccountNames: []string{"some bank"},
 			BankId:                      "1234",
+			Bic:                  bic.BankIdentifierCode("UCJAES2MXXX"),
 			BankIdCode:                  "BARC",
 			BaseCurrency:                currency.PoundSterling,
 			Country:                     country.UnitedKingdomofGreatBritainandNorthernIrelandthe,
 		},
 	}
-	if ! reflect.DeepEqual(actual, expected){
-		t.Errorf("\nGot  : %v\nwant :%v", actual, expected)
+	if !reflect.DeepEqual(actual, expected) {
+		t.Errorf("\nGot  :%v\nwant :%v ", actual, expected)
 	}
 }

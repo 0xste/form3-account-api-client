@@ -17,11 +17,8 @@ func (a *accountClient) Create(ctx context.Context, account *Account) (Account, 
 	if err != nil {
 		return Account{}, &ErrInvalidRequest{requestMethod, endpointAccounts, err.Error()}
 	}
-	req, err := http.NewRequest(requestMethod, accountPath, bytes.NewBuffer(acc))
-	if err != nil {
-		return Account{}, &ErrInvalidRequest{requestMethod, endpointAccounts, err.Error()}
-	}
-	resp, err := a.httpClient.Do(req)
+
+	resp, err := a.httpClient.Post(accountPath, "application/json", bytes.NewBuffer(acc))
 	if err != nil {
 		return Account{}, newGenericAccountError(requestMethod, accountPath, err.Error(), resp.StatusCode)
 	}

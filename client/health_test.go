@@ -18,7 +18,7 @@ func Test_accountClient_GetHealth_up(t *testing.T) {
 		t.Errorf("expected no error but got %v", err)
 	}
 
-	err = accountClient.Check(context.TODO())
+	err = accountClient.Health(context.TODO())
 	if err != nil {
 		t.Errorf("expected no error but got %v", err)
 	}
@@ -36,7 +36,7 @@ func Test_accountClient_GetHealth_down(t *testing.T) {
 		t.Errorf("expected no error but got %v", err)
 	}
 
-	err = accountClient.Check(context.TODO())
+	err = accountClient.Health(context.TODO())
 	if _, ok := err.(ErrRemoteGatewayFailure); ok {
 		t.Errorf("expected remote gateway failure but was  %v", err)
 	}

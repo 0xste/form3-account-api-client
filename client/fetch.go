@@ -14,12 +14,8 @@ func (a *accountClient) Fetch(ctx context.Context, accountId uuid.UUID) (Account
 
 	accountPath := a.baseUrl.String() + endpointAccounts + "/" + accountId.String()
 	requestMethod := http.MethodGet
-	req, err := http.NewRequest(requestMethod, accountPath, nil)
-	if err != nil {
-		return Account{}, &ErrInvalidRequest{requestMethod, endpointAccounts, err.Error()}
-	}
 
-	resp, err := a.httpClient.Do(req)
+	resp, err := a.httpClient.Get(accountPath)
 	if err != nil {
 		return Account{}, newGenericAccountError(requestMethod, accountPath, err.Error(), resp.StatusCode)
 	}

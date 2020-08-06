@@ -9,16 +9,12 @@ import (
 )
 
 // hits the Health api of the account service
-func (a *accountClient) Check(ctx context.Context) error {
+func (a *accountClient) Health(ctx context.Context) error {
 
 	healthPath := a.baseUrl.String() + endpointHealth
 	requestMethod := http.MethodGet
-	req, err := http.NewRequest(requestMethod, healthPath, nil)
-	if err != nil {
-		return &ErrInvalidRequest{http.MethodGet, healthPath, ""}
-	}
 
-	resp, err := a.httpClient.Do(req)
+	resp, err := a.httpClient.Get(healthPath)
 	if err != nil {
 		return &ErrRemoteGatewayFailure{
 			requestMethod,

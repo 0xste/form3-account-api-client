@@ -12,12 +12,12 @@ import (
 
 type Account struct {
 	Attributes     AccountAttributes        `json:"attributes"`
-	CreatedOn      time.Time                `json:"omitempty,created_on"`
+	CreatedOn      time.Time                `json:"created_on,omitempty"`
 	Id             uuid.UUID                `json:"id"`
 	ModifiedOn     time.Time                `json:"modified_on,omitempty"`
 	OrganisationId uuid.UUID                `json:"organisation_id"`
 	AccountType    account_type.AccountType `json:"type"`
-	Version        int64                   `json:"version,omitempty"`
+	Version        int64                    `json:"version,omitempty"`
 }
 
 func (a *Account) WithAccountType(accountType account_type.AccountType) *Account {
@@ -66,11 +66,12 @@ func (a *Account) Validate() error {
 }
 
 type AccountAttributes struct {
-	AlternativeBankAccountNames []string               `json:"alternative_bank_account_names"`
-	BankId                      string                  `json:"bank_id"`
-	BankIdCode                  bic.BankIdentifierCode `json:"bank_id_code"`
-	BaseCurrency                currency.Currency      `json:"base_currency"`
-	Country                     country.Country        `json:"country"`
+	AlternativeBankAccountNames []string `json:"alternative_bank_account_names"`
+	BankId                      string   `json:"bank_id"`
+	BankIdCode                  string   `json:"bank_id_code"`
+	Bic                         bic.BankIdentifierCode `json:"bic"`
+	BaseCurrency                currency.Currency `json:"base_currency"`
+	Country                     country.Country   `json:"country"`
 }
 
 func (a *AccountAttributes) WithAlternativeBankAccountNames(abn []string) *AccountAttributes {
@@ -81,8 +82,13 @@ func (a *AccountAttributes) WithBankId(b string) *AccountAttributes {
 	a.BankId = b
 	return a
 }
-func (a *AccountAttributes) WithBic(b bic.BankIdentifierCode) *AccountAttributes {
+func (a *AccountAttributes) WithBankIdCode(b string) *AccountAttributes {
 	a.BankIdCode = b
+	return a
+}
+
+func (a *AccountAttributes) WithBic(b bic.BankIdentifierCode) *AccountAttributes {
+	a.Bic = b
 	return a
 }
 func (a *AccountAttributes) WithBaseCurrency(c currency.Currency) *AccountAttributes {
@@ -95,7 +101,7 @@ func (a *AccountAttributes) WithCountry(c country.Country) *AccountAttributes {
 }
 
 func (a *AccountAttributes) Validate() error {
-	if bankId, err := strconv.Atoi(a.BankId) ; err != nil || bankId <= 0{
+	if bankId, err := strconv.Atoi(a.BankId); err != nil || bankId <= 0 {
 		return &ErrBadAccountRequest{"Attributes.BankId", a.BankId}
 	}
 	if a.BaseCurrency.Validate() != nil {
@@ -109,5 +115,5 @@ func (a *AccountAttributes) Validate() error {
 
 type AccountWrapper struct {
 	Data  Account           `json:"data"`
-	Links map[string]string `json:"omitempty,links"`
+	Links map[string]string `json:"links,omitempty"`
 }

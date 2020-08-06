@@ -114,4 +114,4 @@ modules.xml
 
 # End of https://www.toptal.com/developers/gitignore/api/go,intellij+all
 
-f3-client-validation
+./f3-client-validation
